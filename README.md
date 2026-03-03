@@ -1,4 +1,4 @@
-# 🤖 Prompt detallado para otro agente IA — Fix Google Antigravity (OpenClaw)
+# Fix Google Antigravity (OpenClaw)
 
 ## Objetivo
 1. Restaurar la autenticación OAuth para el provider `google-antigravity` (eliminada en distribuciones recientes de OpenClaw).
