@@ -1,0 +1,30 @@
+--- /home/jandrade/.openclaw/backups/antigravity-normalization-fix-20260303T220047Z/google-gemini-cli.js	2026-03-03 22:00:47.781799208 +0000
++++ /home/jandrade/.npm-global/lib/node_modules/openclaw/node_modules/@mariozechner/pi-ai/dist/providers/google-gemini-cli.js	2026-03-03 22:39:58.029457739 +0000
+@@ -12,11 +12,13 @@
+ const ANTIGRAVITY_DAILY_ENDPOINT = "https://daily-cloudcode-pa.sandbox.googleapis.com";
+ const ANTIGRAVITY_ENDPOINT_FALLBACKS = [ANTIGRAVITY_DAILY_ENDPOINT, DEFAULT_ENDPOINT];
+ const ANTIGRAVITY_PRO_MODEL_ALIASES = {
+-    "gemini-3-pro-high": "MODEL_PLACEHOLDER_M28",
+-    "gemini-3-pro-low": "MODEL_PLACEHOLDER_M19",
+-    "gemini-3.1-pro-high": "MODEL_PLACEHOLDER_M28",
+-    "gemini-3.1-pro-low": "MODEL_PLACEHOLDER_M19",
+-    "gemini-3.1-pro": "MODEL_PLACEHOLDER_M19",
++    "gemini-3-pro-low": "gemini-3.1-pro-low",
++    "gemini-3-1-pro-low": "gemini-3.1-pro-low",
++    "gemini-3-pro-high": "gemini-3.1-pro-high",
++    "gemini-3-1-pro-high": "gemini-3.1-pro-high",
++    "gemini-3.1-pro-low": "gemini-3.1-pro-low",
++    "gemini-3.1-pro-high": "gemini-3.1-pro-high",
++    "gemini-3.1-pro": "gemini-3.1-pro-low",
+ };
+ function resolveAntigravityModelId(modelId) {
+     return ANTIGRAVITY_PRO_MODEL_ALIASES[modelId] ?? modelId;
+@@ -32,7 +34,7 @@
+     }),
+ };
+ // Headers for Antigravity (sandbox endpoint) - requires specific User-Agent
+-const DEFAULT_ANTIGRAVITY_VERSION = "1.15.8";
++const DEFAULT_ANTIGRAVITY_VERSION = "1.19.6";
+ function getAntigravityHeaders() {
+     const version = process.env.PI_AI_ANTIGRAVITY_VERSION || DEFAULT_ANTIGRAVITY_VERSION;
+     return {

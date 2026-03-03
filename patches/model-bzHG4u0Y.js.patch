@@ -1,0 +1,39 @@
+--- /home/jandrade/.openclaw/backups/antigravity-normalization-fix-20260303T220047Z/model-bzHG4u0Y.js	2026-03-03 22:00:47.729800517 +0000
++++ /home/jandrade/.npm-global/lib/node_modules/openclaw/dist/model-bzHG4u0Y.js	2026-03-03 22:11:39.841495555 +0000
+@@ -91,6 +91,8 @@
+ const GEMINI_3_1_FLASH_PREFIX = "gemini-3.1-flash";
+ const GEMINI_3_1_PRO_TEMPLATE_IDS = ["gemini-3-pro-preview"];
+ const GEMINI_3_1_FLASH_TEMPLATE_IDS = ["gemini-3-flash-preview"];
++const GEMINI_3_1_ANTIGRAVITY_PRO_TEMPLATE_IDS = ["gemini-3-pro-low", "gemini-3-pro-high"];
++const GEMINI_3_1_ANTIGRAVITY_FLASH_TEMPLATE_IDS = ["gemini-3-flash"];
+ function cloneFirstTemplateModel(params) {
+ 	const { normalizedProvider, trimmedModelId, templateIds, modelRegistry } = params;
+ 	for (const templateId of [...new Set(templateIds)].filter(Boolean)) {
+@@ -180,16 +182,21 @@
+ 	});
+ }
+ function resolveGoogleGeminiCli31ForwardCompatModel(provider, modelId, modelRegistry) {
+-	if (normalizeProviderId(provider) !== "google-gemini-cli") return;
++	const normalizedProvider = normalizeProviderId(provider);
++	if (normalizedProvider !== "google-gemini-cli" && normalizedProvider !== "google-antigravity") return;
+ 	const trimmed = modelId.trim();
+ 	const lower = trimmed.toLowerCase();
++	const normalizedLower = lower === "gemini-3-pro" ? "gemini-3.1-pro-low" : lower.replace(/^gemini-3-pro-(low|high)$/i, "gemini-3.1-pro-$1").replace(/^gemini-3-1-pro/i, "gemini-3.1-pro");
++	const normalizedModelId = normalizedLower;
+ 	let templateIds;
+-	if (lower.startsWith(GEMINI_3_1_PRO_PREFIX)) templateIds = GEMINI_3_1_PRO_TEMPLATE_IDS;
+-	else if (lower.startsWith(GEMINI_3_1_FLASH_PREFIX)) templateIds = GEMINI_3_1_FLASH_TEMPLATE_IDS;
+-	else return;
++	if (normalizedModelId.startsWith(GEMINI_3_1_PRO_PREFIX)) {
++		templateIds = normalizedProvider === "google-antigravity" ? GEMINI_3_1_ANTIGRAVITY_PRO_TEMPLATE_IDS : GEMINI_3_1_PRO_TEMPLATE_IDS;
++	} else if (normalizedModelId.startsWith(GEMINI_3_1_FLASH_PREFIX)) {
++		templateIds = normalizedProvider === "google-antigravity" ? GEMINI_3_1_ANTIGRAVITY_FLASH_TEMPLATE_IDS : GEMINI_3_1_FLASH_TEMPLATE_IDS;
++	} else return;
+ 	return cloneFirstTemplateModel({
+-		normalizedProvider: "google-gemini-cli",
+-		trimmedModelId: trimmed,
++		normalizedProvider,
++		trimmedModelId: normalizedModelId,
+ 		templateIds: [...templateIds],
+ 		modelRegistry,
+ 		patch: { reasoning: true }

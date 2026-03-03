@@ -1,0 +1,9 @@
+{
+  "id": "google-antigravity-auth-custom",
+  "providers": ["google-antigravity"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
